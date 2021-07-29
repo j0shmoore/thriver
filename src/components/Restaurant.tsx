@@ -54,10 +54,9 @@ export const FeaturedRestaurants = ({ restaurants, featuredRestaurants }: Restau
  * @param restaurants 
  */
 export const AllRestaurants = ({ restaurants, filter, priceRanges }: Partial<Restaurants> & { filter: string; priceRanges: number[]; }) => {
-  console.log(`all rest: ${filter}`);
   const restaurantCards = restaurants
     .filter(restaurant => filter !== '' ? restaurant.name.toLowerCase().includes(filter.toLowerCase()) : true)
-    // .filter(restaurant => priceRanges && priceRanges.includes(restaurant.priceRange))
+    .filter(restaurant => priceRanges.length > 0 ? priceRanges.includes(restaurant.priceRange) : true)
     .map(restaurant => (
       <RestaurantCard
         key={restaurant.id}
@@ -87,18 +86,49 @@ export const SearchRestaurants = ({ updateSearch, updatePriceRanges }: SearchPro
   const [priceRanges, setPriceRanges] = React.useState([]);
 
   const handleUpdateSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
     setSearch(event.target.value)
     updateSearch(event.target.value);
   };
 
-  const handleUpdatePriceRanges = () => {
-    updatePriceRanges(priceRanges);
+  const handleUpdatePriceRanges = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const priceRange = parseInt(event.target.value);
+    if (event.target.checked) {
+      setPriceRanges([...priceRanges, priceRange]);
+      updatePriceRanges([...priceRanges, priceRange]);
+    }
+    else {
+      setPriceRanges(priceRanges.filter(range => range !== priceRange));
+      updatePriceRanges(priceRanges.filter(range => range !== priceRange));
+    }
   };
 
   return (
-    <div className="input-group mb-3">
-      <input type="text" className="form-control" placeholder="Search" aria-label="Search" value={search} onChange={handleUpdateSearch} />
+    <div className='input-group mb-3'>
+      <input type='text' className='form-control' placeholder='Search' aria-label='Search' value={search} onChange={handleUpdateSearch} />
+      <div className="form-check">
+        <input className="form-check-input" type="checkbox" value="0" id="0" onChange={handleUpdatePriceRanges} />
+        <label className="form-check-label" htmlFor="0">
+          $
+        </label>
+      </div>
+      <div className="form-check">
+        <input className="form-check-input" type="checkbox" value="1" id="1" onChange={handleUpdatePriceRanges} />
+        <label className="form-check-label" htmlFor="1">
+          $$
+        </label>
+      </div>
+      <div className="form-check">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value="2"
+          id="2"
+          onChange={handleUpdatePriceRanges}
+        />
+        <label className="form-check-label" htmlFor="2">
+          $$$
+        </label>
+      </div>
     </div>
   );
 }

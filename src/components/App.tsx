@@ -11,7 +11,7 @@ export const App = () => {
   const [search, setSearch] = useState('');
   const [priceRanges, setPriceRanges] = useState([]);
 
-  console.log(`what is serach now?: ${search}`)
+  console.log(`what is priceRanges now?: ${priceRanges}`)
 
   return (
     <>
