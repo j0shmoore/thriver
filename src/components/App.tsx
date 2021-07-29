@@ -1,16 +1,22 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { Restaurants } from '../models/restaurant.model';
-import { AllRestaurants, FeaturedRestaurants } from './RestaurantCard';
+import { AllRestaurants, FeaturedRestaurants, SearchRestaurants } from './Restaurant';
 
 export const App = () => {
-  let { featuredRestaurants, restaurants }: Restaurants = require('../restaurants.json');
+  const { featuredRestaurants, restaurants }: Restaurants = require('../restaurants.json');
   console.log(featuredRestaurants);
   console.log(restaurants);
+
+  const [search, setSearch] = useState('');
+  const [priceRanges, setPriceRanges] = useState([]);
+
+  console.log(`what is serach now?: ${search}`)
 
   return (
     <>
       <nav className='navbar navbar-expand-lg navbar-light justify-content-between'>
-        <a className='navbar-brand text-light' href='#'>
+        <a className='navbar-brand text-dark' href='#'>
           Feed Me
         </a>
         <button
@@ -26,21 +32,28 @@ export const App = () => {
         </button>
         <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
           <div className='navbar-nav ml-auto'>
-            <a className='nav-item nav-link text-light mr-2 ml-2' href='#'>
+            <a className='nav-item nav-link text-dark mr-2 ml-2' href='#'>
               Restaurants
             </a>
-            <a className='nav-item nav-link text-light mr-2 ml-2' href='#'>
+            <a className='nav-item nav-link text-dark mr-2 ml-2' href='#'>
               Surprise Me
             </a>
           </div>
         </div>
       </nav>
+      <SearchRestaurants
+        updateSearch={setSearch}
+        updatePriceRanges={setPriceRanges}
+      />
+
       <FeaturedRestaurants
         featuredRestaurants={featuredRestaurants}
         restaurants={restaurants}
       />
       <AllRestaurants
         restaurants={restaurants}
+        filter={search}
+        priceRanges={priceRanges}
       />
     </>
   );
