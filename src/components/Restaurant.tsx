@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { Restaurant, Restaurants } from '../models/restaurant.model';
 
 export const RestaurantCard = ({ name, imageSmallUrl, description, priceRange }: Partial<Restaurant>): JSX.Element => {
@@ -7,7 +8,7 @@ export const RestaurantCard = ({ name, imageSmallUrl, description, priceRange }:
       <div className='card' style={{ width: '18rem'}}>
         <img src={imageSmallUrl} className="card-img-top" alt="..." />
         <div className="card-body">
-          <h5 className="card-title">Name {name} - {formatPriceRange(priceRange)}</h5>
+          <h5 className="card-title">{name} - {formatPriceRange(priceRange)}</h5>
           <p className="card-text">{description}</p>
         </div>
       </div>
@@ -95,22 +96,29 @@ export const SearchRestaurants = ({ updateSearch, updatePriceRanges }: SearchPro
   const [search, setSearch] = React.useState('');
   const [priceRanges, setPriceRanges] = React.useState([]);
 
+  useEffect(() => {
+    updatePriceRanges(priceRanges);
+    updateSearch(search);
+  });
+
   const handleUpdateSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value)
-    updateSearch(event.target.value);
   };
 
   const handleUpdatePriceRanges = (event: React.ChangeEvent<HTMLInputElement>) => {
     const priceRange = parseInt(event.target.value);
     if (event.target.checked) {
       setPriceRanges([...priceRanges, priceRange]);
-      updatePriceRanges([...priceRanges, priceRange]);
     }
     else {
       setPriceRanges(priceRanges.filter(range => range !== priceRange));
-      updatePriceRanges(priceRanges.filter(range => range !== priceRange));
     }
   };
+
+  const handleClear = () => {
+    setPriceRanges([]);
+    setSearch('');
+  }
 
   return (
     <div className='input-group mb-3'>
@@ -138,6 +146,7 @@ export const SearchRestaurants = ({ updateSearch, updatePriceRanges }: SearchPro
         <label className="form-check-label" htmlFor="2">
           $$$
         </label>
+        <button onClick={handleClear}>Clear</button>
       </div>
     </div>
   );

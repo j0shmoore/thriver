@@ -5,13 +5,9 @@ import { AllRestaurants, FeaturedRestaurants, SearchRestaurants } from './Restau
 
 export const App = () => {
   const { featuredRestaurants, restaurants }: Restaurants = require('../restaurants.json');
-  console.log(featuredRestaurants);
-  console.log(restaurants);
 
   const [search, setSearch] = useState('');
   const [priceRanges, setPriceRanges] = useState([]);
-
-  console.log(`what is priceRanges now?: ${priceRanges}`)
 
   return (
     <>
@@ -41,6 +37,7 @@ export const App = () => {
           </div>
         </div>
       </nav>
+
       <SearchRestaurants
         updateSearch={setSearch}
         updatePriceRanges={setPriceRanges}
@@ -50,6 +47,7 @@ export const App = () => {
         featuredRestaurants={featuredRestaurants}
         restaurants={restaurants}
       />
+
       <AllRestaurants
         restaurants={restaurants}
         filter={search}
