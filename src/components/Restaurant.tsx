@@ -1,18 +1,26 @@
 import * as React from 'react';
 import { Restaurant, Restaurants } from '../models/restaurant.model';
 
-export const RestaurantCard = ({ name, imageSmallUrl, description}: Partial<Restaurant>): JSX.Element => {
+export const RestaurantCard = ({ name, imageSmallUrl, description, priceRange }: Partial<Restaurant>): JSX.Element => {
   return (
     <div className='col'>
       <div className='card' style={{ width: '18rem'}}>
         <img src={imageSmallUrl} className="card-img-top" alt="..." />
         <div className="card-body">
-          <h5 className="card-title">Name {name}</h5>
+          <h5 className="card-title">Name {name} - {formatPriceRange(priceRange)}</h5>
           <p className="card-text">{description}</p>
         </div>
       </div>
     </div>
   );
+}
+
+const formatPriceRange = (priceRange: number) => {
+  let rangeString = '$';
+  for (let i = 0; i < priceRange; i++) {
+    rangeString = `${rangeString}$`;
+  }
+  return rangeString;
 }
 
 /**
@@ -33,6 +41,7 @@ export const FeaturedRestaurants = ({ restaurants, featuredRestaurants }: Restau
         name={restaurant.name}
         imageSmallUrl={restaurant.imageSmallUrl}
         description={restaurant.description}
+        priceRange={restaurant.priceRange}
       />
     ))
     // Take first 3
@@ -63,6 +72,7 @@ export const AllRestaurants = ({ restaurants, filter, priceRanges }: Partial<Res
         name={restaurant.name}
         imageSmallUrl={restaurant.imageSmallUrl}
         description={restaurant.description}
+        priceRange={restaurant.priceRange}
       />
     ));
 
